@@ -32,7 +32,11 @@ setup(name='sparc.organization',
         },
       zip_safe=False,
       install_requires=[
-          'setuptools'
+          'setuptools',
+          'persistent',
+          'zope.component',
+          'zope.interface',
+          'sparc.entity'
           # -*- Extra requirements: -*-
       ],
       tests_require=[
