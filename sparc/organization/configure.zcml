@@ -3,6 +3,8 @@
     xmlns:i18n="http://namespaces.zope.org/i18n"
     i18n_domain="sparc.organization">
     
+    <include package=".contacts" />
+    
     <utility
     	component=".company.sparcCompanyFactory"
     	name="sparc.organization.company"

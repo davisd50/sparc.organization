@@ -2,6 +2,7 @@ from zope import schema
 from zope.interface import Interface
 from sparc.entity import IEntity
 from sparc.organization import ICompany
+from sparc.organization import IOrganizableEntity
 
 class IAddress(IEntity):
     """A generic address"""
@@ -19,7 +20,7 @@ class IPhoneNumber(IAddress):
 class IPostalAddress(IAddress):
     """A snail mail address location (entity name identifies type...work, personal, etc)"""
 
-class IContact(IEntity):
+class IContact(IOrganizableEntity):
     """Contact information for an entity"""
     email_addresses = schema.List(
             title = u'Email Addresses',
