@@ -4,6 +4,15 @@
     i18n_domain="sparc.organization">
     
     <utility
+    	component=".company.sparcCompanyFactory"
+    	name="sparc.organization.company"
+    	/>
+    <utility
+    	component=".company.persistentSparcCompanyFactory"
+    	name="sparc.organization.persistent.company"
+    	/>
+    
+    <utility
     	component=".person.sparcPersonFactory"
     	name="sparc.organization.person"
     	/>
