@@ -55,6 +55,8 @@ class IDirectoryLookup(Interface):
     """A lookup directory for a contact"""
     def __getitem__(id):
         """Return IContact for given id"""
+    def __contains__(id):
+        """True if id is in directory"""
     def __iter__():
         """Iterator of all readable & available contacts in directory"""
     def by_name(name):

@@ -9,7 +9,7 @@ class SparcCompany(SparcEntity):
     
     def __init__(self, **kwargs):
         super(SparcCompany, self).__init__(**kwargs)
-sparcPersonFactory = Factory(SparcCompany)
+sparcCompanyFactory = Factory(SparcCompany)
 
 
 class PersistentSparcCompany(SparcCompany, Persistent):
