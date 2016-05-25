@@ -1,0 +1,71 @@
+# Indexed catalog for Sparc contact information
+This shows some simple usage and searching for contacts.  You might also want
+to consider using the sparc.catalog.IDirectory interface for real-world usage.
+
+During the catalog creation process, we'll also create the Repoze-required
+document map.  By passing this into the catalog object creation, it will insure
+that sub-entities will be cataloged during the main entity indexing process.
+In our case, the sub-entities will be the 'companies' attribute.
+>>> from zope.component import createObject
+>>> doc_map = createObject('sparc.catalog.repoze.document_map')
+>>> catalog = createObject('sparc.organization.contacts_repoze_catalog',
+... 															       doc_map)
+>>> scatalog = createObject(u"sparc.catalog.repoze.catalog", catalog=catalog,
+... 														   doc_map=doc_map)
+
+We need to create a contact that will be cataloged.  This requires that we
+also create a couple companies. to associate with the contact.
+>>> company1 = createObject('sparc.organization.company',
+...                                           id='company1',
+...                                           name=u'Company 1 name',
+...                                           description=u'Company 1 description',
+...                                           details=u'Company 1 details')
+>>> company2 = createObject('sparc.organization.company',
+...                                           id='company2',
+...                                           name=u'Company 2 name',
+...                                           description=u'Company 2 description',
+...                                           details=u'Company 2 details')
+>>> contact = createObject('sparc.organization.contact',
+...                                           id='contact1',
+...                                           name=u'Contact  1 name',
+...                                           description=u'Contact 1 description',
+...                                           details=u'Contact 1 details',
+... 										  email_addresses=[u'name1@email.com',
+... 														   u'name2@email.com'],
+... 										  phone_numbers=[u'123-456-789',
+... 														 u'987-654-321'],
+... 										  postal_addresses=[
+... 											u'address 1\ncity,state\nzip',
+... 											u'address 2\ncity,state\nzip'
+... 															],
+... 										  companies=[company1,
+... 													 company2])
+>>> doc_id = doc_map.add(contact.getId())
+>>> catalog.index_doc(doc_id, contact)
+
+Let's test the keyword indexes
+>>> from repoze.catalog.query import Eq
+>>> result = catalog.query(Eq('email_addresses', 'name1@email.com'))
+>>> result[0] == 1 # 1 result
+True
+>>> result = catalog.query(Eq('phone_numbers', '987-654-321'))
+>>> result[0] == 1
+True
+>>> result = catalog.query(Eq('postal_addresses_text', 'city'))
+>>> result[0] == 1
+True
+>>> result = catalog.query(Eq('postal_addresses_text', 'address 1'))
+>>> result[0] == 1
+True
+
+The related company entities should have also been indexed.
+>>> result = catalog.query(Eq('id', 'company1'))
+>>> result[0] == 1
+True
+
+In addition, the companies also have an indexed relationship back to the
+contact
+>>> from repoze.catalog.query import And
+>>> result = catalog.query(And(Eq('id', 'contact1'), Eq('entities',company2.id)))
+>>> result[0] == 1
+True

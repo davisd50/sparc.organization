@@ -11,5 +11,9 @@
     	component=".contacts.persistentSparcContactFactory"
     	name="sparc.organization.persistent.contact"
     	/>
+    <utility
+    	component=".contacts.contactsCatalogFactory"
+    	name="sparc.organization.contacts_repoze_catalog"
+    	/>
 
 </configure>

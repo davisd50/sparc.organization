@@ -1,5 +1,4 @@
 from zope import schema
-from zope.interface import Interface
 from sparc.entity import IEntity
 from sparc.organization import ICompany
 from sparc.organization import IOrganizableEntity
@@ -25,23 +24,17 @@ class IContact(IOrganizableEntity):
     email_addresses = schema.List(
             title = u'Email Addresses',
             description = u'Email addresses for contact',
-            value_type = schema.Field(
-                    constraint = lambda v: IEmailAddress.providedBy(v)
-                    )
+            value_type = schema.TextLine(title=u'email')
             )
     phone_numbers = schema.List(
             title = u'Phone Numbers',
             description = u'Phone numbers for contact',
-            value_type = schema.Field(
-                    constraint = lambda v: IPhoneNumber.providedBy(v)
-                    )
+            value_type = schema.TextLine(title=u'phone')
             )
     postal_addresses = schema.List(
             title = u'Postal Addresses',
             description = u'Postal addresses for contact',
-            value_type = schema.Field(
-                    constraint = lambda v: IPostalAddress.providedBy(v)
-                    )
+            value_type = schema.Text(title=u'address')
             )
     companies = schema.List(
             title = u'Associated Companies',
@@ -50,20 +43,3 @@ class IContact(IOrganizableEntity):
                     constraint = lambda v: ICompany.providedBy(v)
                     )
             )
-
-class IDirectoryLookup(Interface):
-    """A lookup directory for a contact"""
-    def __getitem__(id):
-        """Return IContact for given id"""
-    def __contains__(id):
-        """True if id is in directory"""
-    def __iter__():
-        """Iterator of all readable & available contacts in directory"""
-    def by_name(name):
-        """Return iterable of contacts by exact name"""
-    def search_name(name_re):
-        """Return iterable of contacts matching regular expression"""
-    def by_email(email):
-        """Return iterable of contacts that have exact email address"""
-    def search_email(email_re):
-        """Return iterable of contacts matching regular expression"""
