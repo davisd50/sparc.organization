@@ -6,5 +6,8 @@ class IOrganizableEntity(IEntity):
 class IPerson(IOrganizableEntity):
     """A Person with a name and Id"""
 
+class ITeam(IOrganizableEntity):
+    """A Team with a name and Id"""
+
 class ICompany(IOrganizableEntity):
     """A Company with a name and Id"""
